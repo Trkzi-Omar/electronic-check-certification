@@ -1,0 +1,28 @@
+.verification-card {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+:host ::ng-deep {
+  .success-snackbar {
+    background: #4caf50;
+    color: white;
+  }
+
+  .error-snackbar {
+    background: #f44336;
+    color: white;
+  }
+}

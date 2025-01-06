@@ -1,1 +1,46 @@
-<p>check-verification works!</p>
+<mat-card class="verification-card">
+  <mat-card-header>
+    <mat-card-title>Check Verification</mat-card-title>
+    <mat-card-subtitle>Enter check details to verify</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="verificationForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Check Number</mat-label>
+        <input matInput formControlName="checkNumber" placeholder="Enter check number">
+        <mat-error *ngIf="verificationForm.get('checkNumber')?.hasError('required')">
+          Check number is required
+        </mat-error>
+        <mat-error *ngIf="verificationForm.get('checkNumber')?.hasError('minlength')">
+          Check number must be at least 5 characters
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Amount</mat-label>
+        <input matInput type="number" formControlName="amount" placeholder="Enter amount">
+        <mat-error *ngIf="verificationForm.get('amount')?.hasError('required')">
+          Amount is required
+        </mat-error>
+        <mat-error *ngIf="verificationForm.get('amount')?.hasError('min')">
+          Amount must be greater than 0
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Merchant ID</mat-label>
+        <input matInput formControlName="merchantId" placeholder="Enter merchant ID">
+        <mat-error *ngIf="verificationForm.get('merchantId')?.hasError('required')">
+          Merchant ID is required
+        </mat-error>
+      </mat-form-field>
+
+      <div class="button-container">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!verificationForm.valid || loading">
+          {{ loading ? 'Verifying...' : 'Verify Check' }}
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
