@@ -4,7 +4,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
 import { CheckService } from '../../services/check.service';
 import { VerificationRequest, VerificationResponse, CheckStatus } from '../../models/check.model';
 
@@ -12,11 +13,13 @@ import { VerificationRequest, VerificationResponse, CheckStatus } from '../../mo
   selector: 'app-check-verification',
   standalone: true,
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatSnackBarModule
   ],
   templateUrl: './check-verification.component.html',
   styleUrl: './check-verification.component.scss'
@@ -33,7 +36,7 @@ export class CheckVerificationComponent {
     this.verificationForm = this.fb.group({
       checkNumber: ['', [Validators.required, Validators.minLength(5)]],
       amount: ['', [Validators.required, Validators.min(0)]],
-      merchantId: ['', [Validators.required]]
+      merchantId: ['MERCH001', [Validators.required]]
     });
   }
 
@@ -54,7 +57,9 @@ export class CheckVerificationComponent {
           });
 
           if (response.status === CheckStatus.VERIFIED) {
-            this.verificationForm.reset();
+            this.verificationForm.reset({
+              merchantId: 'MERCH001'
+            });
           }
         },
         error: (error) => {

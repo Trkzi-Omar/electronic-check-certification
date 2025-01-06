@@ -18,5 +18,5 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './nav-bar.component.scss'
 })
 export class NavBarComponent {
-
+  title = 'Check Certification System';
 }
