@@ -139,6 +139,10 @@ public class Account {
 ```
 
 ### 7. Développer un simple frontend web pour l'application
+
+
+![frontend-check](screenshots/angular%20%20Screenshot%20from%202025-01-06%2011-36-34.png)
+
 ![frontend-dashboard](screenshots/angular%20%20Screenshot%20from%202025-01-06%2011-36-54.png)
 
 Structure du frontend Angular :
