@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: commercant-service
+          uri: lb://COMMERCANT-SERVICE
+          predicates:
+            - Path=/api/commercant/**
+        - id: banque-centrale-service
+          uri: lb://BANQUE-CENTRALE-SERVICE
+          predicates:
+            - Path=/api/banque-centrale/**
+        - id: agence-bancaire-service
+          uri: lb://AGENCE-BANCAIRE-SERVICE
+          predicates:
+            - Path=/api/agence/**
+        - id: analytics-service
+          uri: lb://ANALYTICS-SERVICE
+          predicates:
+            - Path=/api/analytics/**
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka 
