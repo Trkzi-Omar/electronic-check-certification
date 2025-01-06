@@ -1,7 +1,10 @@
 package ma.enset.commercantservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import ma.enset.commercantservice.client.AccountClient;
+import ma.enset.commercantservice.client.BankAgencyClient;
 import ma.enset.commercantservice.domain.Check;
+import ma.enset.commercantservice.dto.AccountDTO;
 import ma.enset.commercantservice.dto.CheckRequestDTO;
 import ma.enset.commercantservice.dto.CheckResponseDTO;
 import ma.enset.commercantservice.repository.CheckRepository;
@@ -17,6 +20,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CheckServiceImpl implements CheckService {
     private final CheckRepository checkRepository;
+    private final BankAgencyClient bankAgencyClient;
+    private final AccountClient accountClient;
 
     @Override
     public CheckResponseDTO saveCheck(CheckRequestDTO checkDTO) {
@@ -52,8 +57,21 @@ public class CheckServiceImpl implements CheckService {
         if (check == null) {
             throw new RuntimeException("Check not found");
         }
-        check.setIsCertified(true);
-        return mapToDTO(checkRepository.save(check));
+
+        // Verify account exists and has sufficient balance
+        AccountDTO account = accountClient.getAccount(check.getAccountNumber());
+        if (account == null) {
+            throw new RuntimeException("Account not found");
+        }
+
+        // Request check certification from bank
+        try {
+            accountClient.certifyCheck(checkNumber, check.getAccountNumber(), check.getAmount());
+            check.setIsCertified(true);
+            return mapToDTO(checkRepository.save(check));
+        } catch (Exception e) {
+            throw new RuntimeException("Check certification failed: " + e.getMessage());
+        }
     }
 
     @Override
